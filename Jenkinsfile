@@ -15,6 +15,7 @@ pipeline {
             }
         }
         stage('Gather Parameters') {
+            agent any
             steps {
                 timeout(time: 30, unit: 'SECONDS') {
                       script {
