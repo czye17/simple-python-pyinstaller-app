@@ -28,7 +28,7 @@ pipeline {
                           env.TWO = INPUT_PARAMS.TWO
                       }
                 }
-                echo '${env.ONE}'
+                echo "Selected Environment: ${env.ONE}"
              }
         }
         stage('Test') {
@@ -54,7 +54,7 @@ pipeline {
             }
             steps {
                 sh 'pyinstaller --onefile sources/add2vals.py' 
-                echo '${env.ONE}'
+                echo "Selected Environment: ${env.ONE}"
             }
             post {
                 success {
