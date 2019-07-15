@@ -29,6 +29,7 @@ pipeline {
                       }
                 }
                 echo "Selected Environment: ${env.ONE}"
+                sh "python hello.py ${env.ONE}"
              }
         }
         stage('Test') {
