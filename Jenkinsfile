@@ -16,7 +16,6 @@ pipeline {
         }
         stage('Gather Parameters') {
             steps {
-                
                 timeout(time: 30, unit: 'SECONDS') {
                       script {
                           // Show the select input modal
@@ -28,6 +27,7 @@ pipeline {
                           env.TWO = INPUT_PARAMS.TWO
                       }
                 }
+                sh 'echo $(env.ONE)'
              }
         }
         stage('Test') {
