@@ -22,39 +22,39 @@ pipeline {
                           env.ONE = INPUT_PARAMS.ONE
                           env.TWO = INPUT_PARAMS.TWO
                       }
-                  }
+             }
         }
- 	stage('Test') {
-            agent {
-                docker {
-                    image 'qnib/pytest'
+        stage('Test') {
+                agent {
+                    docker {
+                        image 'qnib/pytest'
+                    }
+                }
+                steps {
+                    sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
+                }
+                post {
+                    always {
+                        junit 'test-reports/results.xml'
+                    }
                 }
             }
-            steps {
-                sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
-            }
-            post {
-                always {
-                    junit 'test-reports/results.xml'
+        stage('Deliver') {
+                agent {
+                    docker {
+                        image 'cdrx/pyinstaller-linux:python2'
+                    }
                 }
-            }
-        }
- 	stage('Deliver') {
-            agent {
-                docker {
-                    image 'cdrx/pyinstaller-linux:python2'
+                steps {
+                    sh 'pyinstaller --onefile sources/add2vals.py'
+                    sh 'echo $(env.ONE)'
+                    sh 'dist/add2vals $(env.ONE) $(env.TWO)
                 }
-            }
-            steps {
-                sh 'pyinstaller --onefile sources/add2vals.py'
-                sh 'echo $(env.ONE)'
-                sh 'dist/add2vals $(env.ONE) $(env.TWO)
-            }
-            post {
-                success {
-                    archiveArtifacts 'dist/add2vals'
+                post {
+                    success {
+                        archiveArtifacts 'dist/add2vals'
+                    }
                 }
-            }
         }
     }
 }
