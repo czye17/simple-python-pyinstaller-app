@@ -9,7 +9,10 @@ pipeline {
             }
             steps {
                   sh 'python -m py_compile sources/add2vals.py sources/calc.py'
-                  timeout(time: 30, unit: 'SECONDS') {
+            }
+        }
+        stage('Gather Parameters') {
+             timeout(time: 30, unit: 'SECONDS') {
                       script {
                           // Show the select input modal
                           def INPUT_PARAMS = input message: 'Please input numbers', ok: 'Next',
@@ -20,7 +23,6 @@ pipeline {
                           env.TWO = INPUT_PARAMS.TWO
                       }
                   }
-            }
         }
  	stage('Test') {
             agent {
