@@ -15,7 +15,9 @@ pipeline {
             }
         }
         stage('Gather Parameters') {
-             timeout(time: 30, unit: 'SECONDS') {
+            steps {
+                
+                timeout(time: 30, unit: 'SECONDS') {
                       script {
                           // Show the select input modal
                           def INPUT_PARAMS = input message: 'Please input numbers', ok: 'Next',
@@ -25,6 +27,7 @@ pipeline {
                           env.ONE = INPUT_PARAMS.ONE
                           env.TWO = INPUT_PARAMS.TWO
                       }
+                }
              }
         }
         stage('Test') {
