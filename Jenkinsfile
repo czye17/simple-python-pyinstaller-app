@@ -45,6 +45,8 @@ pipeline {
             }
             steps {
                 sh 'pyinstaller --onefile sources/add2vals.py'
+                sh 'echo $(env.ONE)'
+                sh 'dist/add2vals $(env.ONE) $(env.TWO)
             }
             post {
                 success {
