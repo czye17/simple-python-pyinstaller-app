@@ -4,16 +4,6 @@ pipeline {
         skipStagesAfterUnstable()
     }
     stages {
-        stage('Build') {
-            agent {
-                docker {
-                    image 'python:2-alpine'
-                }
-            }
-            steps {
-                sh 'python -m py_compile sources/add2vals.py sources/calc.py'
-            }
-        }
         stage('Gather Parameters') {
             agent any
             steps {
@@ -29,8 +19,18 @@ pipeline {
                       }
                 }
                 echo "Selected Environment: ${env.ONE}"
-                sh "python hello.py ${env.ONE}"
              }
+        }
+        stage('Build') {
+            agent {
+                docker {
+                    image 'python:2-alpine'
+                }
+            }
+            steps {
+                sh 'python -m py_compile sources/add2vals.py sources/calc.py'
+                sh "python hello.py ${env.ONE}"
+            }
         }
         stage('Test') {
             agent {
