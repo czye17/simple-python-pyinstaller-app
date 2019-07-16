@@ -7,6 +7,7 @@ pipeline {
         stage('Gather_Parameters') {
             agent any
             input {
+                    id "input"
                     message "Should we continue?"
                     ok "Yes, we should."
                     parameters {
@@ -17,6 +18,7 @@ pipeline {
             steps {
                 script {
                     env.ONE = ONE
+                    env.TWO = TWO
                 }
                 echo "Selected Environment: ${ONE}"
              }
@@ -29,7 +31,7 @@ pipeline {
             }
             steps {
                 sh 'python -m py_compile sources/add2vals.py sources/calc.py'
-                sh "python hello.py ${env.ONE}"
+                sh "python hello.py ${input.ONE}"
             }
         }
         stage('Test') {
