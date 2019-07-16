@@ -10,8 +10,8 @@ pipeline {
                     message "Should we continue?"
                     ok "Yes, we should."
                     parameters {
-                        text(name: 'ONE', defaultValue: '0', description: 'First Number'),
-                        text(name: 'TWO', defaultValue: '0', description: 'Second Number')
+                        [text(name: 'ONE', defaultValue: '0', description: 'First Number'),
+                        text(name: 'TWO', defaultValue: '0', description: 'Second Number')]
                     }
                 }
             steps {
