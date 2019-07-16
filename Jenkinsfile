@@ -31,7 +31,7 @@ pipeline {
             }
             steps {
                 sh 'python -m py_compile sources/add2vals.py sources/calc.py'
-                sh "python hello.py ${input.ONE}"
+                sh "python hello.py ${env.ONE}"
             }
         }
         stage('Test') {
