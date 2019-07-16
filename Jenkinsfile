@@ -15,6 +15,9 @@ pipeline {
                     }
                 }
             steps {
+                script {
+                    env.ONE = ONE
+                }
                 echo "Selected Environment: ${ONE}"
              }
         }
@@ -26,7 +29,7 @@ pipeline {
             }
             steps {
                 sh 'python -m py_compile sources/add2vals.py sources/calc.py'
-                sh "python hello.py ${ONE}"
+                sh "python hello.py ${env.ONE}"
             }
         }
         stage('Test') {
