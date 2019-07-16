@@ -26,7 +26,7 @@ pipeline {
             }
             steps {
                 sh 'python -m py_compile sources/add2vals.py sources/calc.py'
-                sh "python hello.py ${Gather_Parameters.ONE} ${ONE}"
+                sh "python hello.py ${ONE}"
             }
         }
         stage('Test') {
