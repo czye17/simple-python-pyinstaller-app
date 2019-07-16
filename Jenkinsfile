@@ -3,26 +3,11 @@ pipeline {
     options {
         skipStagesAfterUnstable()
     }
+    parameters {
+        text(name: 'ONE', defaultValue: '0', description: 'First Number')
+        text(name: 'TWO', defaultValue: '0', description: 'Second Number')
+    }
     stages {
-        stage('Gather_Parameters') {
-            agent any
-            input {
-                    id "input"
-                    message "Should we continue?"
-                    ok "Yes, we should."
-                    parameters {
-                        text(name: 'ONE', defaultValue: '0', description: 'First Number')
-                        text(name: 'TWO', defaultValue: '0', description: 'Second Number')
-                    }
-                }
-            steps {
-                script {
-                    env.ONE = ONE
-                    env.TWO = TWO
-                }
-                echo "Selected Environment: ${ONE}"
-             }
-        }
         stage('Build') {
             agent {
                 docker {
@@ -31,7 +16,7 @@ pipeline {
             }
             steps {
                 sh 'python -m py_compile sources/add2vals.py sources/calc.py'
-                sh "python hello.py ${env.ONE}"
+                sh "python hello.py ${params.ONE}"
             }
         }
         stage('Test') {
@@ -57,8 +42,8 @@ pipeline {
             }
             steps {
                 sh 'pyinstaller --onefile sources/add2vals.py' 
-                echo "Selected Environment: ${env.ONE}"
-                sh "dist/add2vals ${env.ONE} ${env.TWO}"
+                echo "Selected Environment: ${params.ONE}"
+                sh "dist/add2vals ${params.ONE} ${params.TWO}"
             }
             post {
                 success {
