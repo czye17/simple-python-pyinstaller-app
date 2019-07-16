@@ -4,21 +4,18 @@ pipeline {
         skipStagesAfterUnstable()
     }
     stages {
-        stage('Gather Parameters') {
+        stage('Gather_Parameters') {
             agent any
-            steps {
-                timeout(time: 30, unit: 'SECONDS') {
-                      script {
-                          // Show the select input modal
-                          def INPUT_PARAMS = input(message: 'Please input numbers', ok: 'Next',
-                                             parameters: [
-                                             text(name: 'ONE', defaultValue: '0', description: 'First Number'),
-                                             text(name: 'TWO', defaultValue: '0', description: 'Second Number')])
-                          env.ONE = INPUT_PARAMS.ONE
-                          env.TWO = INPUT_PARAMS.TWO
-                      }
+            input {
+                    message "Should we continue?"
+                    ok "Yes, we should."
+                    parameters {
+                        text(name: 'ONE', defaultValue: '0', description: 'First Number'),
+                        text(name: 'TWO', defaultValue: '0', description: 'Second Number')
+                    }
                 }
-                echo "Selected Environment: ${env.ONE}"
+            steps {
+                echo "Selected Environment: ${ONE}"
              }
         }
         stage('Build') {
@@ -29,7 +26,7 @@ pipeline {
             }
             steps {
                 sh 'python -m py_compile sources/add2vals.py sources/calc.py'
-                sh "python hello.py ${env.ONE}"
+                sh "python hello.py ${Gather_Parameters.ONE} ${ONE}"
             }
         }
         stage('Test') {
